@@ -26,6 +26,7 @@
     "@fortawesome/fontawesome-free": "^6.4.2",
     "bootstrap": "^5.2.3",
     "jquery": "^3.6.4",
+    "ng-openapi-gen": "^0.50.3",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.16.0",
     "run-script-os": "^1.1.6",
