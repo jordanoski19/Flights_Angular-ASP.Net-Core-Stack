@@ -13,18 +13,31 @@ export class SearchFlightsComponent implements OnInit {
 
   searchResult: FlightRm[] = []
 
-  constructor(private flightService: FlightService) { }
+  constructor(private flightService: FlightService) {
+  }
 
   ngOnInit(): void {
+    console.log(this.searchResult);
+    console.log('Response:');
   }
 
   search() {
-    this.flightService.searchFlight({})
-      .subscribe(response => this.searchResult = response,
-        this.handleError)
+    // Call the searchFlight method and subscribe to the observable to receive flight data
+    this.flightService.searchFlight({}).subscribe(
+      (response: FlightRm[]) => {
+        console.log('Flight Data:', response); // Log the response to the console
+        this.searchResult = response; // Assign the response to your searchResult property
+      },
+      (error) => {
+        console.error('Error:', error); // Log any errors to the console
+        this.handleError(error);
+      }
+    );
   }
 
   private handleError(err: any) {
+    console.log("Response Error. Status: ", err.status)
+    console.log("Response Error. Status Text: ", err.statusText)
     console.log(err)
   }
 
