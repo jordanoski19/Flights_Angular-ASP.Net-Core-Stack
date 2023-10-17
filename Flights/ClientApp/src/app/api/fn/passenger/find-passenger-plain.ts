@@ -6,14 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { FlightRm } from '../../models/flight-rm';
+import { PassengerRm } from '../../models/passenger-rm';
 
-export interface FlightGet$Plain$Params {
+export interface FindPassenger$Plain$Params {
+  email: string;
 }
 
-export function flightGet$Plain(http: HttpClient, rootUrl: string, params?: FlightGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<FlightRm>>> {
-  const rb = new RequestBuilder(rootUrl, flightGet$Plain.PATH, 'get');
+export function findPassenger$Plain(http: HttpClient, rootUrl: string, params: FindPassenger$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<PassengerRm>> {
+  const rb = new RequestBuilder(rootUrl, findPassenger$Plain.PATH, 'get');
   if (params) {
+    rb.path('email', params.email, {});
   }
 
   return http.request(
@@ -21,9 +23,9 @@ export function flightGet$Plain(http: HttpClient, rootUrl: string, params?: Flig
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<FlightRm>>;
+      return r as StrictHttpResponse<PassengerRm>;
     })
   );
 }
 
-flightGet$Plain.PATH = '/Flight';
+findPassenger$Plain.PATH = '/Passenger/{email}';
