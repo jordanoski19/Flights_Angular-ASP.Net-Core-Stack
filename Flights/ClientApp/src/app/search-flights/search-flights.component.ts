@@ -17,19 +17,16 @@ export class SearchFlightsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.searchResult);
-    console.log('Response:');
   }
 
   search() {
-    // Call the searchFlight method and subscribe to the observable to receive flight data
     this.flightService.searchFlight({}).subscribe(
       (response: FlightRm[]) => {
-        console.log('Flight Data:', response); // Log the response to the console
-        this.searchResult = response; // Assign the response to your searchResult property
+        console.log('Flight Data:', response);
+        this.searchResult = response;
       },
       (error) => {
-        console.error('Error:', error); // Log any errors to the console
+        console.error('Error:', error);
         this.handleError(error);
       }
     );
