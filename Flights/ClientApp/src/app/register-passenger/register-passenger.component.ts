@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PassengerService } from './../api/services/passenger.service';
 import { FormBuilder } from '@angular/forms';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-passenger',
@@ -10,7 +12,9 @@ import { FormBuilder } from '@angular/forms';
 export class RegisterPassengerComponent implements OnInit {
 
   constructor(private passengerService: PassengerService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router) { }
 
   form = this.fb.group({
     email: [''],
@@ -22,11 +26,40 @@ export class RegisterPassengerComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  checkPassenger(): void {
+    const email = this.form.get('email')?.value;
+    if (email) {
+      const params = { email: email as string };
+
+      this.passengerService.findPassenger(params).subscribe(
+        this.login,
+        (e) => {
+          if (e.status !== 404) {
+            console.error(e);
+          }
+        }
+      );
+    } else {
+      console.error('Email is null or undefined');
+    }
+  }
+
   register() {
     console.log("Form Values:", this.form.value);
 
     this.passengerService.registerPassenger({ body: this.form.value })
-      .subscribe(_ => console.log("form posted to server"))
+      .subscribe(this.login, console.error)
+
+  }
+
+  private login = () => {
+    const email = this.form.get('email')?.value;
+    if (email) {
+      this.authService.loginUser({ email });
+      this.router.navigate(['/search-flights']);
+    } else {
+      console.error('Email is null or undefined');
+    }
   }
 
 }
