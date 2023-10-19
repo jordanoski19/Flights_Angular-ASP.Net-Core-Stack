@@ -16,7 +16,7 @@ export class BookFlightComponent implements OnInit {
     private router: Router,
     private flightService: FlightService,
     private authService: AuthService,
-    private fb: FormBuilder  ) { }
+    private fb: FormBuilder) { }
 
   flightId: string = 'not loaded'
   flight: FlightRm = {}
@@ -26,10 +26,6 @@ export class BookFlightComponent implements OnInit {
   })
 
   ngOnInit(): void {
-
-    if (!this.authService.currentUser)
-      this.router.navigate(['/register-passenger'])
-
     this.route.paramMap
       .subscribe(p => this.findFlight(p.get("flightId")))
   }
